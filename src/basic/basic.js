@@ -212,3 +212,71 @@ Shineyue.Base = (function(flexSetter){
 *
 *@description 基本类
 */
+(function(){
+
+  var ShineyueClass,
+      Base = Shineyue.Base;
+
+  function makeCtor(className){
+    function constructor(){
+        return this.constructor.apply(this , arguments) || null;
+    }
+
+    if(className){
+      constructor.name = className;
+    }
+
+    return constructor;
+  }
+
+  // Shineyue.Class 类
+  Shineyue.Class = SyCls = function(Class , data , onCreated){
+
+    if(typeof Class != 'function'){
+      onCreated = data;
+      data = Class;
+      Class = null;
+    }
+
+    if(!data){
+      data = {};
+    }
+
+    Class = SyCls.create(Class , data);
+    SyCls.process(Class , data , onCreated);
+    return Class;
+  };
+
+  Shineyue.apply(Shineyue , {
+
+    makeCtor : makeCtor,
+
+    /**
+    *@private
+    */
+    onBeforeCreated : function(Class, data, hooks){
+      Class.addMembers(data);
+      hooks.onCreated.call(Class , Class);
+    },
+
+    /**
+    *@private
+    */
+    create : function(Class , data){
+      if(!Class){
+        Class = makeCtor(data.$className);
+      }
+
+      return Class;
+    },
+
+    /**
+    *@private
+    */
+    process : function(Class , data ,  onCreated){
+
+    },
+
+  });
+
+}());

@@ -6,6 +6,6 @@
 
 var Shineyue = Shineyue || {};
 
-var Shineyue.Error = (function(){
-  
+Shineyue.Error = (function(){
+
 }());

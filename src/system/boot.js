@@ -12,6 +12,8 @@ Shineyue.Boot = (function(){
 
       platform = navigator.platform,
 
+      doc = document,
+
       //检测类型
       check = function(regx , up){
         return regx.test(up);
@@ -23,7 +25,7 @@ Shineyue.Boot = (function(){
       *  BackCompat：标准兼容模式关闭，当document.compatMode等于BackCompat时，浏览器客户区宽度为document.body.clientWidth;
       *  CSS1Compat：标准兼容模式开启,当document.compatMode等于CSS1Compat时浏览器客户区宽度为document.documentElement.clientWidth;
       */
-      isStrict = document.compatMode == "CSS1Compat",
+      isStrict = doc.compatMode == "CSS1Compat",
 
       //windows 平台
       isWin = check(/(?:Win32|Windows)/ , platform),
@@ -153,8 +155,68 @@ Shineyue.Boot = (function(){
       //百度 浏览器
       isMaxthon = check(/bidubrowser/ , uc),
 
+      resolverEl = doc.createElement('a'),
+
+      isBrowser = typeof window !== 'undefined',
+
+      _apply = function(object , config , defaults){
+        if(defaults){
+          _apply(object , defaults);
+        }
+
+        if(object && config && typeof config === 'object'){
+          for(var i in config){
+            object[i] = config[i];
+          }
+        }
+
+        return object;
+      },
+
+      _merge = function(){
+        var lowerCase = false,
+            obj = Array.prototype.shift.call(arguments),
+            index , i , len , value;
+
+        if(typeof arguments[arguments.length - 1] === 'boolean'){
+          lowerCase = Array.prototype.pop.call(arguments);
+        }
+
+        len = arguments.length;
+
+        for(index = 0; index < len; index++){
+          value = arguments[index];
+          if(typeof value === 'object'){
+            for(i in value){
+              obj[lowerCase ? i.toLowerCase() : i] = value[i];
+            }
+          }
+        }
+
+        return obj;
+      },
+
+      _getKeys = (typeof Object.keys == 'function') ? function(obj){
+        if(!obj){
+          return [];
+        }
+        return Object.keys(obj);
+      } : function(obj){
+        var keys = [],
+            o;
+        for(o in obj){
+          if(obj.hasOwnProperty(o)){
+            keys.push(o);
+          }
+        }
+        return keys;
+      },
+
       Boot = {
 
+        init : function(){
+          new Entry();
+        }
       };
 
   function Request(){
@@ -162,15 +224,22 @@ Shineyue.Boot = (function(){
   };
 
   Request.prototype = {
-
+    createScript : function(url){
+      var script = doc.createElement('script');
+      script.setAttribute("src" , url);
+      script.setAttribute("async" , true);
+      script.setAttribute("type" , "text/javascript");
+      return script;
+    }
   };
 
   function Entry(){
-
+    var script = new Request().createScript("./../src/basic/layout.js");
+    document.head.appendChild(script);
   };
 
   Entry.prototype = {
-
+    
   };
 
   return Boot;
