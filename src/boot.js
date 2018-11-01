@@ -2,7 +2,7 @@
 /**
 *@class Shineyue.Boot
 *
-*@descript 判断平台类型, 以及浏览器类型 , 然后按需加载各平台需要的代码
+*@description 判断平台类型, 以及浏览器类型 , 然后按需加载各平台需要的代码
 */
 var Shineyue = Shineyue || {};
 
@@ -175,9 +175,3 @@ Shineyue.Boot = (function(){
 
   return Boot;
 }());
-
-if(!Function.prototype.bind){
-  (function(){
-
-  }());
-}
