@@ -274,7 +274,7 @@ Shineyue.Base = (function(flexSetter){
     *@private
     */
     process : function(Class , data ,  onCreated){
-
+      
     },
 
   });
