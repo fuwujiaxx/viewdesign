@@ -1,0 +1,3 @@
+Shineyue.define('Shineyue.ComponentManager' , {
+  
+});

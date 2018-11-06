@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8"/>
+      <title>demo</title>
+      <link rel="stylesheet" type="text/css" href="../ext-6.2.0/build/classic/theme-crisp/resources/theme-crisp-all-debug.css" />
+      <script type="text/javascript" src="../ext-6.2.0/build/ext-all-debug.js"></script>
+      <script type="text/javascript" src="../ext-6.2.0/ext-bootstrap.js"></script>
+      <script type="text/javascript" src="../ext-6.2.0/build/classic/locale/locale-zh_CN.js"></script>
+      <script type="text/javascript">
+        /*Ext.onReady(function(){
+          Ext.create('Ext.tree.Panel', {
+                title: 'Simple Tree',
+                root: {
+                    text: "Root node",
+                    expanded: true,
+                    children: [
+                        { text: "Child 1", leaf: true },
+                        { text: "Child 2", leaf: true }
+                    ]
+                },
+                renderTo: Ext.getBody()
+            });
+        });
+        */
+
+        Ext.define('MyApp.foo.Bar', function () {
+                   var id = 0;
+
+                   return {
+                       nextId: function () {
+                           return ++id;
+                    }
+                  };
+              });
+      </script>
+  </head>
+  <body>
+  </body>
+</html>
