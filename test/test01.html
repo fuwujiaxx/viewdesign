@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8"/>
+      <title>demo</title>
+      <script>
+        function getBrowsers(){
+          var browsers = {},
+              ua = navigator.userAgent,
+              maxIEVersion , prefix , value , key , index , len , match , version , matched,
+              browserPriority = ['edge' , 'opera' , 'dolfin' , 'webosbrowser' , 'silk' ,
+               'chromeiOS' , 'chromeMobile' , 'ie' , 'firefox' , 'safari' , 'chrome'],
+              browserPrefixes = { ie : 'MSIE ' , edge : 'Edge/' , firefox : 'Firefox/' , chrome : 'Chrome/' ,
+              safari : 'Version/' , opera : 'OPR/' , dolfin : 'Dolfin/' , webosbrowser : 'wOSBrowser/' ,
+              chromeMobile : 'CrMo/' , chromeiOS : 'CriOS/' , silk : 'Silk/'} ;
+
+          len = browserPriority.length;
+          for(index = 0; index < len; index++){
+            key = me.browserPriority[index];
+            if(!matched){
+              value = browserPrefixes[key];
+              match = ua.match(new RegExp('(' + value + ')([\\w\\._]+)'));
+              version = match && match.length > 1 ? parseInt(match[2]) : 0;
+              if(version){
+                metched = true;
+              }
+            }else{
+              version = 0;
+            }
+            browsers[key] = version;
+          }
+
+          if(browsers.ie){
+            var mode = document.documentMode;
+            if(mode >= 8){
+              browsers.ie = mode;
+            }
+          }
+
+          version = browsers.ie || false;
+          maxIEVersion = Math.max(version , me.maxIEVersion);
+          for(index = 8; index <= maxIEVersion; ++index){
+            prefix = 'ie' + index;
+            browsers[prefix + 'm'] = version ? version <= index : 0;
+            browsers[prefix] = version ? version === index : 0;
+            browsers[prefix + 'p'] = version ? version >= index : 0;
+          }
+
+          return browsers;
+        }
+
+        console.log(getBrowsers());
+      </script>
+  </head>
+  <body>
+  </body>
+</html>
