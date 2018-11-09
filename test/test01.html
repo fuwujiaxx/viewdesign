@@ -16,7 +16,7 @@
 
           len = browserPriority.length;
           for(index = 0; index < len; index++){
-            key = me.browserPriority[index];
+            key = browserPriority[index];
             if(!matched){
               value = browserPrefixes[key];
               match = ua.match(new RegExp('(' + value + ')([\\w\\._]+)'));
@@ -38,15 +38,46 @@
           }
 
           version = browsers.ie || false;
-          maxIEVersion = Math.max(version , me.maxIEVersion);
+          maxIEVersion = Math.max(version , 12);
           for(index = 8; index <= maxIEVersion; ++index){
             prefix = 'ie' + index;
             browsers[prefix + 'm'] = version ? version <= index : 0;
             browsers[prefix] = version ? version === index : 0;
             browsers[prefix + 'p'] = version ? version >= index : 0;
           }
-
+          //alert(document.documentMode);
           return browsers;
+        }
+
+        function getOperatingSystems(){
+          var systems = {},
+              value , key , keys , index , len , match , matched , version , activeCount,
+              osPrefixes = { tizen : '(Tizen )' , ios : 'i(?:Pad|Phone|Pod)(?:.*)CPU(?: iPhone)? OS' ,
+              android : '(Android |HTC_|Silk/)' , windowsPhone : 'Windows Phone' , blackberry : '(?:BlackBerry|BB)(?:.*)Version/' ,
+              rimTablet : 'RIM Tablet OS ' , webos : '(?:webOS|hpwOS)/' , bada : 'Bada/' , chrome : 'CrOS '} ,
+              _getKeys = (typeof Object.keys == 'function') ? function(object){
+                if(!object){
+                  return [];
+                }
+                return Object.keys(object);
+              } : function(object){
+                var keys = [],
+                    property;
+                    for(property in object){
+                      if(object.hasOwnproperty(property)){
+                        keys.push(property);
+                      }
+                    }
+                return keys;
+              };
+
+          keys = _getKeys(osPrefixes);
+          len = keys.length;
+          for(index = 0 , activeCount = 0; index < len; index++){
+            key = keys[index];
+            value = osPrefixes[key];
+            match = ua
+          }
         }
 
         console.log(getBrowsers());
