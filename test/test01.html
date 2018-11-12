@@ -12,7 +12,7 @@
                'chromeiOS' , 'chromeMobile' , 'ie' , 'firefox' , 'safari' , 'chrome'],
               browserPrefixes = { ie : 'MSIE ' , edge : 'Edge/' , firefox : 'Firefox/' , chrome : 'Chrome/' ,
               safari : 'Version/' , opera : 'OPR/' , dolfin : 'Dolfin/' , webosbrowser : 'wOSBrowser/' ,
-              chromeMobile : 'CrMo/' , chromeiOS : 'CriOS/' , silk : 'Silk/'} ;
+              chromeMobile : 'CrMo/' , chromeiOS : 'CriOS/' , silk : 'Silk/'};
 
           len = browserPriority.length;
           for(index = 0; index < len; index++){
@@ -27,6 +27,7 @@
             }else{
               version = 0;
             }
+
             browsers[key] = version;
           }
 
@@ -50,11 +51,14 @@
         }
 
         function getOperatingSystems(){
-          var systems = {},
+          var systems = {},ua = navigator.userAgent,
               value , key , keys , index , len , match , matched , version , activeCount,
+
               osPrefixes = { tizen : '(Tizen )' , ios : 'i(?:Pad|Phone|Pod)(?:.*)CPU(?: iPhone)? OS' ,
               android : '(Android |HTC_|Silk/)' , windowsPhone : 'Windows Phone' , blackberry : '(?:BlackBerry|BB)(?:.*)Version/' ,
               rimTablet : 'RIM Tablet OS ' , webos : '(?:webOS|hpwOS)/' , bada : 'Bada/' , chrome : 'CrOS '} ,
+
+              fallbackOSPrefixes = { windows : 'win' , mac : 'mac' , linux : 'linux' },
               _getKeys = (typeof Object.keys == 'function') ? function(object){
                 if(!object){
                   return [];
@@ -76,11 +80,48 @@
           for(index = 0 , activeCount = 0; index < len; index++){
             key = keys[index];
             value = osPrefixes[key];
-            match = ua
+            match = ua.match(new RegExp('(' + value + ')([^\\s;]+)'));
+            matched = match ? match[1] : null;
+
+            if(matched && (matched === 'HTC_' || matched === 'Silk/')){
+              version = 2.3;
+            }else{
+              version = match && match.length > 1 ? parseFloat(match[match.length - 1]) : 0;
+            }
+
+            if(version){
+              activeCount++;
+            }
+            systems[key] = version;
           }
+          console.log(systems);
+          keys = _getKeys(fallbackOSPrefixes);
+          len = keys.length;
+          for(index = 0; index < len; index++){
+            key = keys[index];
+
+            if(activeCount === 0){
+              value = fallbackOSPrefixes[key];
+              match = ua.toLowerCase().match(new RegExp(value));
+              systems[key] = match ? true : 0;
+            }else{
+              systems[key] = 0;
+            }
+          }
+
+          return systems;
         }
 
-        console.log(getBrowsers());
+
+        function canonicalUrl(url){
+          var resolverEl = document.createElement('a');
+          resolverEl.href = url;
+        }
+
+        console.log(getOperatingSystems());
+
+        //alert(navigator.userAgent);
+        alert(window.location.search.substr(1));
       </script>
   </head>
   <body>
