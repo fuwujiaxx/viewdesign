@@ -116,12 +116,30 @@
         function canonicalUrl(url){
           var resolverEl = document.createElement('a');
           resolverEl.href = url;
+          var ret = resolverEl.href,
+              dc = _config.disableCachingParam,
+              pos = dc ? ret.indexOf(dc + '=') : -1,
+              c , end;
+
+          if(pos > 0 && ((c = ret.charAt(pos - 1)) === '?' || c === '&')){
+            end = ret.indexOf('&' , pos);
+            end = (end < 0) ? '' : ret.substring(end);
+            if(end && c === '?'){
+              ++pos;
+              end = end.substring(1);
+            }
+
+            ret = ret.substring(0 , pos -1) + end;
+          }
+
+          return ret;
         }
 
         console.log(getOperatingSystems());
-
+      //  alert(false&&1);
+      alert(/[^'](?:%23){1}/.test("select like '%23'"));
         //alert(navigator.userAgent);
-        alert(window.location.search.substr(1));
+        //alert(window.location.search.substr(1));
       </script>
   </head>
   <body>
